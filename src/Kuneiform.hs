@@ -1,6 +1,5 @@
 module Kuneiform
-    ( someFunc
-    ) where
+  ( module X
+  ) where
 
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+import qualified Kuneiform.Model as X
