@@ -54,10 +54,18 @@ data ResourceRelation = ResourceRelation
 
 instance Default ResourceRelation
 
+newtype ModuleName = ModuleName String
+  deriving (Eq, Hashable, Show)
+
+data Module = Module
+  { moduleConfig     :: Config
+  , moduleGoal       :: Goal
+  , moduleState      :: State
+  , moduleResources  :: ResourceRelation
+  } deriving (Eq, Generic, Show)
+
 data World = World
-  { worldConfig     :: Config
-  , worldGoal       :: Goal
-  , worldState      :: State
+  { worldModules    :: HashMap ModuleName Module
   , worldResources  :: ResourceRelation
   } deriving (Eq, Generic, Show)
 
