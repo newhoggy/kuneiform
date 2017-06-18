@@ -20,6 +20,10 @@ library
                       , Kuneiform.Model.Orphans
                       , Kuneiform.Model.STM
                       , Kuneiform.Model.Types
+                      , Kuneiform.Resources
+                      , Kuneiform.Resources.AWS
+                      , Kuneiform.Resources.AWS.S3
+                      , Kuneiform.Resources.AWS.S3.Bucket
   build-depends:        base >= 4.7 && < 5
                       , containers
                       , data-default
