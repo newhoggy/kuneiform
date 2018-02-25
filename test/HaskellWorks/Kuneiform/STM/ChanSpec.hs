@@ -15,7 +15,7 @@ import Time.System
 
 spec :: Spec
 spec = describe "HaskellWorks.Kuneiform.STM.ChanSpec" $ do
-  it "Can read chan" $ do
+  it "A full channel cannot be written to" $ do
     require $ withTests 1 $ property $ do
       c <- liftIO $ atomically $ newChan 2
       tc1 <- liftIO $ timeCurrent
