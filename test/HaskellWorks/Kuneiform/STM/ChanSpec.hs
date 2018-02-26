@@ -1,7 +1,8 @@
 module HaskellWorks.Kuneiform.STM.ChanSpec (spec) where
 
-import Control.Concurrent              (threadDelay)
+import Control.Concurrent              (forkIO, threadDelay)
 import Control.Concurrent.STM
+import Control.Monad                   (void)
 import Control.Monad.IO.Class
 import Data.Hourglass
 import HaskellWorks.Hspec.Hedgehog
@@ -16,9 +17,15 @@ spec :: Spec
 spec = describe "HaskellWorks.Kuneiform.STM.ChanSpec" $ do
   it "Can read chan" $ do
     require $ withTests 1 $ property $ do
-      _ <- liftIO $ atomically $ newChan 2
+      c <- liftIO $ atomically $ newChan 2
       tc1 <- liftIO $ timeCurrent
-      liftIO $ threadDelay 2000000
+      void $ liftIO $ forkIO $ do
+        threadDelay 2000000
+        void $ atomically $ readChan c
+      liftIO $ atomically $ writeChan c 'a'
+      liftIO $ atomically $ writeChan c 'b'
       tc2 <- liftIO $ timeCurrent
-      let td = timeDiff tc2 tc1
-      td === 2
+      liftIO $ atomically $ writeChan c 'c'
+      tc3 <- liftIO $ timeCurrent
+      timeDiff tc2 tc1 === 0
+      timeDiff tc3 tc1 === 2
